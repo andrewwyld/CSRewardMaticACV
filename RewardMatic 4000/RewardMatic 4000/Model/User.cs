@@ -1,6 +1,9 @@
 #nullable enable
 
-namespace RewardMatic_4000
+using RewardMatic_4000;
+using RewardMatic_4000.Infrastructure;
+
+namespace RewardMatic_4000.Model
 {
     public class User
     {
@@ -25,7 +28,7 @@ namespace RewardMatic_4000
             while (_nextScore < _score)
             {
                 _nextIndex++;
-                
+
                 if (_nextIndex >= Reward.AvailableRewards.Length)
                 {
                     break;

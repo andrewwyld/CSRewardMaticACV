@@ -1,4 +1,6 @@
 using NUnit.Framework;
+using RewardMatic_4000.Infrastructure;
+using RewardMatic_4000.Model;
 
 namespace RewardMatic_4000
 {

@@ -1,4 +1,6 @@
-namespace RewardMatic_4000
+using System.Text.Json.Serialization;
+
+namespace RewardMatic_4000.Infrastructure
 {
     public class Reward
     {
@@ -16,7 +18,7 @@ namespace RewardMatic_4000
 
         // the reward message
 
-        private Reward(int scoreDifferential, string message)
+        public Reward(int scoreDifferential, string message)
         {
             ScoreDifferential = scoreDifferential;
             Message = message;
@@ -24,6 +26,7 @@ namespace RewardMatic_4000
 
         public int ScoreDifferential { get; }
 
+        [JsonPropertyName("name")]
         public string Message { get; }
     }
 }

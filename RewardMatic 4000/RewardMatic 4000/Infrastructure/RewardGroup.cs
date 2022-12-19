@@ -1,18 +1,26 @@
 #nullable enable
 using System.Collections.Generic;
 
-namespace RewardMatic_4000
+namespace RewardMatic_4000.Infrastructure
 {
     public class RewardGroup
     {
         private readonly List<Reward> _groupRewards;
 
         public string Name { get; }
-        
-        public RewardGroup(string name, List<Reward> groupRewards)
+
+        public List<Reward> Rewards
+        {
+            get
+            { 
+                return _groupRewards;
+            }
+        }
+
+        public RewardGroup(string name, List<Reward> rewards)
         {
             Name = name;
-            _groupRewards = groupRewards;
+            _groupRewards = rewards;
         }
 
         public Reward? GetRewardByIndex(int i)
