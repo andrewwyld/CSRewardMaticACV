@@ -46,6 +46,7 @@ namespace RewardMatic_4000
 
         // test to make sure the "latest reward received" function works correctly
         // TODO implement User.GetLatestRewardReceived()
+        [Test]
         public void TestLatestReward()
         {
             User argond = new User();
@@ -58,7 +59,7 @@ namespace RewardMatic_4000
             
             argond.UpdateScore(250000);
             
-            Assert.AreEqual(Reward.AvailableRewards[6], argond.GetLatestRewardReceived());
+            Assert.AreEqual(Reward.AvailableRewards[5], argond.GetLatestRewardReceived());
         }
     }
 }
