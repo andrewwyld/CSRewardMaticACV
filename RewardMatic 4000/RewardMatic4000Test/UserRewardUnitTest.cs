@@ -15,15 +15,15 @@ namespace RewardMatic_4000
         {
             User aspidistra = new User();
 
-            Assert.AreEqual(0, aspidistra.Score);
+            Assert.That(aspidistra.Score, Is.EqualTo(0));
             
             aspidistra.UpdateScore(250);
             
-            Assert.AreEqual(250,aspidistra.Score);
+            Assert.That(aspidistra.Score, Is.EqualTo(250));
 
             aspidistra.UpdateScore(250000);
             
-            Assert.AreEqual(250250, aspidistra.Score);
+            Assert.That(aspidistra.Score, Is.EqualTo(250250));
         }
 
         // test to make sure the "reward in progress" function works correctly
@@ -33,15 +33,31 @@ namespace RewardMatic_4000
         {
             User rangdo = new User();
             
-            Assert.AreEqual(rangdo.GetRewardInProgress(), Reward.AvailableRewards[0]);
+            Assert.That(Reward.AvailableRewards[0], Is.EqualTo(rangdo.GetRewardInProgress()));
             
             rangdo.UpdateScore(250);
             
-            Assert.AreEqual(rangdo.GetRewardInProgress(), Reward.AvailableRewards[1]);
+            Assert.That(Reward.AvailableRewards[1], Is.EqualTo(rangdo.GetRewardInProgress()));
             
             rangdo.UpdateScore(250000);
             
             Assert.IsNull(rangdo.GetRewardInProgress());
+        }
+
+        [Test]
+        public void TestRewardInProgressSmallStep()
+        {
+            User rangdo = new User();
+
+            Assert.That(Reward.AvailableRewards[0], Is.EqualTo(rangdo.GetRewardInProgress()));
+
+            rangdo.UpdateScore(10);
+
+            Assert.That(Reward.AvailableRewards[0], Is.EqualTo(rangdo.GetRewardInProgress()));
+
+            rangdo.UpdateScore(10);
+
+            Assert.That(Reward.AvailableRewards[0], Is.EqualTo(rangdo.GetRewardInProgress()));
         }
 
         // test to make sure the "latest reward received" function works correctly
@@ -55,11 +71,27 @@ namespace RewardMatic_4000
             
             argond.UpdateScore(250);
             
-            Assert.AreEqual(Reward.AvailableRewards[0], argond.GetLatestRewardReceived());
+            Assert.That(argond.GetLatestRewardReceived(), Is.EqualTo(Reward.AvailableRewards[0]));
             
             argond.UpdateScore(250000);
             
-            Assert.AreEqual(Reward.AvailableRewards[5], argond.GetLatestRewardReceived());
+            Assert.That(argond.GetLatestRewardReceived(), Is.EqualTo(Reward.AvailableRewards[5]));
+        }
+
+        [Test]
+        public void TestLatestRewardSmallStep()
+        {
+            User argond = new User();
+
+            Assert.That(argond.GetLatestRewardReceived(), Is.Null);
+
+            argond.UpdateScore(20);
+
+            Assert.That(argond.GetLatestRewardReceived(), Is.Null);
+
+            argond.UpdateScore(20);
+
+            Assert.That(argond.GetLatestRewardReceived(), Is.Null);
         }
     }
 }
