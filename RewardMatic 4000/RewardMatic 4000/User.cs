@@ -1,15 +1,16 @@
 #nullable enable
-using System;
-using System.Collections.Generic;
 
 namespace RewardMatic_4000
 {
     public class User
     {
         private int _score = 0;
+        private int _nextIndex = 0;
+        private int _nextScore;
 
         public User()
         {
+            _nextScore = Reward.AvailableRewards[0].ScoreDifferential;
         }
 
         public int Score
@@ -20,16 +21,38 @@ namespace RewardMatic_4000
         public void UpdateScore(int update)
         {
             _score += update;
+
+            while (_nextScore < _score)
+            {
+                _nextIndex++;
+                
+                if (_nextIndex >= Reward.AvailableRewards.Length)
+                {
+                    break;
+                }
+
+                _nextScore += Reward.AvailableRewards[_nextIndex].ScoreDifferential;
+            }
         }
 
         public Reward? GetRewardInProgress()
         {
-            throw new NotImplementedException();
+            if (_nextIndex < Reward.AvailableRewards.Length)
+            {
+                return Reward.AvailableRewards[_nextIndex];
+            }
+
+            return null;
         }
 
         public Reward? GetLatestRewardReceived()
         {
-            throw new NotImplementedException();
+            if (_nextIndex - 1 >= 0)
+            {
+                return Reward.AvailableRewards[_nextIndex - 1];
+            }
+
+            return null;
         }
     }
 }
