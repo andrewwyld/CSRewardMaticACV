@@ -7,7 +7,7 @@ namespace RewardMatic_4000.Model
 {
     public class User
     {
-        private int _score = 0;
+        private long _score = 0;
         private int _nextIndex = 0;
         private int _nextScore;
 
@@ -21,14 +21,17 @@ namespace RewardMatic_4000.Model
             _currentGroupIndex = 0;
         }
 
-        public int Score
+        public long Score
         {
             get { return _score; }
         }
 
-        public void UpdateScore(int update)
+        public void UpdateScore(long update)
         {
-            _score += update;
+            checked
+            {
+                _score += update;
+            }
 
             while (_nextScore <= _score)
             {
