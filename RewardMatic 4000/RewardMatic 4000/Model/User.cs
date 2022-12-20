@@ -1,7 +1,7 @@
 #nullable enable
 
-using RewardMatic_4000;
 using RewardMatic_4000.Infrastructure;
+using System.Collections.Generic;
 
 namespace RewardMatic_4000.Model
 {
@@ -11,9 +11,14 @@ namespace RewardMatic_4000.Model
         private int _nextIndex = 0;
         private int _nextScore;
 
-        public User()
+        private readonly IList<RewardGroup> _rewardGroups;
+        private int _currentGroupIndex;
+
+        public User(IList<RewardGroup>  rewardGroups)
         {
-            _nextScore = Reward.AvailableRewards[0].ScoreDifferential;
+            _rewardGroups = rewardGroups;
+            _nextScore = _rewardGroups[0].Rewards[0].ScoreDifferential;
+            _currentGroupIndex = 0;
         }
 
         public int Score
@@ -25,24 +30,32 @@ namespace RewardMatic_4000.Model
         {
             _score += update;
 
-            while (_nextScore < _score)
+            while (_nextScore <= _score)
             {
                 _nextIndex++;
 
-                if (_nextIndex >= Reward.AvailableRewards.Length)
+                if (_currentGroupIndex >= _rewardGroups.Count ||
+                    _nextIndex >= _rewardGroups[_currentGroupIndex].Rewards.Count)
+                {
+                    _currentGroupIndex++;
+                    _nextIndex = 0;
+                }
+
+                if (_currentGroupIndex >= _rewardGroups.Count)
                 {
                     break;
                 }
 
-                _nextScore += Reward.AvailableRewards[_nextIndex].ScoreDifferential;
+                _nextScore += _rewardGroups[_currentGroupIndex].Rewards[_nextIndex].ScoreDifferential;
             }
         }
 
         public Reward? GetRewardInProgress()
         {
-            if (_nextIndex < Reward.AvailableRewards.Length)
+            if (_currentGroupIndex < _rewardGroups.Count && 
+                _nextIndex < _rewardGroups[_currentGroupIndex].Rewards.Count)
             {
-                return Reward.AvailableRewards[_nextIndex];
+                return _rewardGroups[_currentGroupIndex].Rewards[_nextIndex];
             }
 
             return null;
@@ -50,12 +63,55 @@ namespace RewardMatic_4000.Model
 
         public Reward? GetLatestRewardReceived()
         {
-            if (_nextIndex - 1 >= 0)
+            if (_nextIndex == 0 && _currentGroupIndex >= 1)
             {
-                return Reward.AvailableRewards[_nextIndex - 1];
+                int index = _rewardGroups[_currentGroupIndex - 1].Rewards.Count - 1;
+                return _rewardGroups[_currentGroupIndex - 1].Rewards[index];
+            }
+            else if (_nextIndex > 0)
+            {
+                return _rewardGroups[_currentGroupIndex].Rewards[_nextIndex - 1];
             }
 
             return null;
+        }
+
+        public RewardGroup? GetRewardGroupInProgress()
+        {
+            if (_currentGroupIndex < _rewardGroups.Count)
+            {
+                return _rewardGroups[_currentGroupIndex];
+            }
+
+            return null;
+        }
+
+        public RewardGroup? GetLatestRewardGroupReceived()
+        {
+            if (_currentGroupIndex == 0 && _nextIndex == 0)
+            {
+                return null;
+            }
+            else if (_currentGroupIndex > 0 && _nextIndex == 0)
+            {
+                return _rewardGroups[_currentGroupIndex - 1];
+            }
+            else if (_currentGroupIndex < _rewardGroups.Count)
+            { 
+                return _rewardGroups[_currentGroupIndex];
+            }
+
+            return null;
+        }
+
+        public RewardGroup? GetCompleteRewardGroupReceived()
+        {
+            if (_currentGroupIndex == 0)
+            {
+                return null;
+            }
+
+            return _rewardGroups[_currentGroupIndex - 1];
         }
     }
 }

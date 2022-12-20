@@ -5,29 +5,21 @@ namespace RewardMatic_4000.Infrastructure
 {
     public class RewardGroup
     {
-        private readonly List<Reward> _groupRewards;
-
         public string Name { get; }
 
-        public List<Reward> Rewards
-        {
-            get
-            { 
-                return _groupRewards;
-            }
-        }
+        public List<Reward> Rewards { get; }
 
         public RewardGroup(string name, List<Reward> rewards)
         {
             Name = name;
-            _groupRewards = rewards;
+            Rewards = rewards;
         }
 
         public Reward? GetRewardByIndex(int i)
         {
-            if (i < _groupRewards.Count)
+            if (i < Rewards.Count)
             {
-                return _groupRewards[i];
+                return Rewards[i];
             }
             else
             {
