@@ -6,7 +6,7 @@ namespace RewardMatic_4000.Service
 {
     public class LevelService : ILevelService
     {
-        private IRewardsReader _reader;
+        private readonly IRewardsReader _reader;
         private User _user;
 
         public LevelService(IRewardsReader reader)

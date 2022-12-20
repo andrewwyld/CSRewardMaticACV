@@ -17,7 +17,7 @@ namespace RewardMatic_4000.Model
         public User(IList<RewardGroup>  rewardGroups)
         {
             _rewardGroups = rewardGroups;
-            _nextScore = _rewardGroups[0].Rewards[0].ScoreDifferential;
+            _nextScore = _rewardGroups[0].GetRewardByIndex(0).ScoreDifferential;
             _currentGroupIndex = 0;
         }
 
@@ -38,7 +38,7 @@ namespace RewardMatic_4000.Model
                 _nextIndex++;
 
                 if (_currentGroupIndex >= _rewardGroups.Count ||
-                    _nextIndex >= _rewardGroups[_currentGroupIndex].Rewards.Count)
+                    _nextIndex >= _rewardGroups[_currentGroupIndex].GetRewardsCount())
                 {
                     _currentGroupIndex++;
                     _nextIndex = 0;
@@ -49,16 +49,22 @@ namespace RewardMatic_4000.Model
                     break;
                 }
 
-                _nextScore += _rewardGroups[_currentGroupIndex].Rewards[_nextIndex].ScoreDifferential;
+                Reward? reward = _rewardGroups[_currentGroupIndex].GetRewardByIndex(_nextIndex);
+                if (reward == null)
+                {
+                    break;
+                }
+
+                _nextScore += reward.ScoreDifferential;
             }
         }
 
         public Reward? GetRewardInProgress()
         {
             if (_currentGroupIndex < _rewardGroups.Count && 
-                _nextIndex < _rewardGroups[_currentGroupIndex].Rewards.Count)
+                _nextIndex < _rewardGroups[_currentGroupIndex].GetRewardsCount())
             {
-                return _rewardGroups[_currentGroupIndex].Rewards[_nextIndex];
+                return _rewardGroups[_currentGroupIndex].GetRewardByIndex(_nextIndex);
             }
 
             return null;
@@ -68,12 +74,12 @@ namespace RewardMatic_4000.Model
         {
             if (_nextIndex == 0 && _currentGroupIndex >= 1)
             {
-                int index = _rewardGroups[_currentGroupIndex - 1].Rewards.Count - 1;
-                return _rewardGroups[_currentGroupIndex - 1].Rewards[index];
+                int index = _rewardGroups[_currentGroupIndex - 1].GetRewardsCount() - 1;
+                return _rewardGroups[_currentGroupIndex - 1].GetRewardByIndex(index);
             }
             else if (_nextIndex > 0)
             {
-                return _rewardGroups[_currentGroupIndex].Rewards[_nextIndex - 1];
+                return _rewardGroups[_currentGroupIndex].GetRewardByIndex(_nextIndex - 1);
             }
 
             return null;

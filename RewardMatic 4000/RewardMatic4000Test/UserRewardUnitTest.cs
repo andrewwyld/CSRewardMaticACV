@@ -46,7 +46,6 @@ namespace RewardMatic_4000
         }
 
         // test to make sure the "reward in progress" function works correctly
-        // TODO implement User.GetRewardInProgress()
         [Test]
         public void TestRewardInProgress()
         {
@@ -80,7 +79,6 @@ namespace RewardMatic_4000
         }
 
         // test to make sure the "latest reward received" function works correctly
-        // TODO implement User.GetLatestRewardReceived()
         [Test]
         public void TestLatestReward()
         {

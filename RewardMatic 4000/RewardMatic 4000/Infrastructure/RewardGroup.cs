@@ -7,6 +7,10 @@ namespace RewardMatic_4000.Infrastructure
     {
         public string Name { get; }
 
+        /// <summary>
+        /// Should consider defining custom JSON converter for deserialization and having a private field instead, for 
+        /// safety concerns, so that the list cannot be altered from the public interface.
+        /// </summary>
         public List<Reward> Rewards { get; }
 
         public RewardGroup(string name, List<Reward> rewards)
@@ -25,6 +29,11 @@ namespace RewardMatic_4000.Infrastructure
             {
                 return null;
             }
+        }
+
+        public int GetRewardsCount()
+        { 
+            return Rewards.Count;
         }
     }
 }

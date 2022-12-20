@@ -3,7 +3,7 @@
 ## Assumptions
 
 * system shall fail in case of a score value overflow.
-* reward groups shall be interpreted sequentially in the order that they are read, similar to how one would expect to see rewards in a game as they progress through the levels of diffculty.
+* reward groups shall be interpreted sequentially in the order that they are read from the input json file, similar to how one would expect to see rewards in a game as they progress through the levels of diffculty.
 
 ## Code localisation
 
@@ -17,3 +17,5 @@ There are two possible approaches I would consider:
 
 1. Apply the scale factor directly on the currently calculated score value, which in turn would result in advancing the user through the remaining groups of rewards.
 2. Keep a secondary "Bonus score" and scale that bsaed on the current main score value. Could provide access to bonus levels, which a user may choose to pursue or not.
+
+In both scenarios already received rewards shall not be altered in any way, unless this is intentionally desired to be done at the application level.
